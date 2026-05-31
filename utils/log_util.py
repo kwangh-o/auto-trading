@@ -1,7 +1,10 @@
 import logging.handlers
+import os
 from datetime import datetime
 
 import pytz
+
+LOG_PATH = 'logs/log.log'
 
 
 class LogUtil:
@@ -14,8 +17,9 @@ class LogUtil:
         if not logger.handlers:
             formatter = LoggingTimeFormatter('%(asctime)s - %(levelname)s - %(message)s')
 
+            os.makedirs(os.path.dirname(LOG_PATH), exist_ok=True)
             file_handler = logging.handlers.TimedRotatingFileHandler(
-                filename='logs/log.log',
+                filename=LOG_PATH,
                 when='W0',
                 interval=1,
                 backupCount=5,
