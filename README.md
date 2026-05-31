@@ -9,7 +9,7 @@ APScheduler 기반 스케줄러와 FastAPI 관리 서버로 구성된다.
 - 한국투자증권 Open API 계정 및 앱 키
 
 ```bash
-pip install fastapi "uvicorn[standard]" pyyaml apscheduler pytz requests
+pip install -r requirements.txt
 ```
 
 ## 한국투자증권 API
@@ -123,6 +123,7 @@ API 요청과 스케줄러 작업은 `state_manager.lock` (RLock)으로 상호 �
 
 ```
 ├── app.py                          # 진입점: 스케줄러 + API 서버 기동
+├── requirements.txt                # 의존성 매니페스트 (버전 핀 고정)
 ├── config.yaml                     # 인증/인프라 설정
 ├── symbols.yaml                    # 종목별 매매 설정
 ├── state.json                      # 런타임 상태 영속 저장소
