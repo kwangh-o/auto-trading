@@ -98,27 +98,6 @@ class AutoTradeUtil:
                 return stock
         return None
 
-    """현금 잔고조회"""
-    def get_balance(self):
-        PATH = "uapi/overseas-stock/v1/trading/inquire-psamount"
-        URL = f"{self.URL_BASE}/{PATH}"
-        headers = {
-            "Content-Type": "application/json", 
-            "authorization": f"Bearer {self.ACCESS_TOKEN}",
-            "appKey": self.APP_KEY,
-            "appSecret": self.APP_SECRET,
-            "tr_id": "TTTS3007R",
-        }
-        params = {
-            "CANO": self.CANO,
-            "ACNT_PRDT_CD": self.ACNT_PRDT_CD,
-            "OVRS_EXCG_CD": "AMEX",
-            "OVRS_ORD_UNPR": "0",
-            "ITEM_CD": "MSTZ",
-        }
-        res = requests.get(URL, headers=headers, params=params)
-        return res.json()['output']
-
     """미국 주식 지정가 매수"""
     def buy(self, market="NASD", code="AAPL", qty="1", price="0"):
         PATH = "uapi/overseas-stock/v1/trading/order"
@@ -203,7 +182,7 @@ class AutoTradeUtil:
             exchange_rate = float(res.json()['output2'][0]['frst_bltn_exrt'])
         return exchange_rate
 
-    def get_today_price_detail(self, market="AMS", code="MSTZ"):
+    def get_today_price_detail(self, market="AMS", code="AAPL"):
         PATH = "uapi/overseas-price/v1/quotations/price-detail"
         URL = f"{self.URL_BASE}/{PATH}"
         headers = {
@@ -222,7 +201,7 @@ class AutoTradeUtil:
         return res.json()['output']
 
     """현재가 조회"""
-    def get_current_price(self, market="NAS", code="AAPL"):
+    def get_current_price(self, market="NASD", code="AAPL"):
         PATH = "uapi/overseas-price/v1/quotations/price"
         URL = f"{self.URL_BASE}/{PATH}"
         headers = {
@@ -241,7 +220,7 @@ class AutoTradeUtil:
         return float(res.json()['output']['last']) if res.json()['output']['last'] != '' else 0.0
 
     """미체결내역 조회 (01: 매도, 02: 매수)"""
-    def get_not_concluded_order(self, market="AMEX", sll_buy_dvsn_cd="01"):
+    def get_not_concluded_order(self, market="NASD", sll_buy_dvsn_cd="01"):
         PATH = "uapi/overseas-stock/v1/trading/inquire-nccs"
         URL = f"{self.URL_BASE}/{PATH}"
         headers = {
@@ -263,7 +242,7 @@ class AutoTradeUtil:
         return [order for order in res.json()["output"] if order["sll_buy_dvsn_cd"] == sll_buy_dvsn_cd]
 
     """주문 체결여부 조회"""
-    def is_order_concluded(self, market="AMEX", code="%", order_no=""):
+    def is_order_concluded(self, market="NASD", code="%", order_no=""):
         PATH = "uapi/overseas-stock/v1/trading/inquire-nccs"
         URL = f"{self.URL_BASE}/{PATH}"
         timezone = pytz.timezone('Asia/Seoul')
@@ -298,7 +277,7 @@ class AutoTradeUtil:
         return order is not None and int(order["nccs_qty"]) == 0
 
     """주문 취소"""
-    def cancel_order(self, market="AMEX", code="MSTZ", order_no=""):
+    def cancel_order(self, market="NASD", code="AAPL", order_no=""):
         PATH = "uapi/overseas-stock/v1/trading/order-rvsecncl"
         URL = f"{self.URL_BASE}/{PATH}"
         headers = {
@@ -322,7 +301,7 @@ class AutoTradeUtil:
         return res.json()["rt_cd"] == "0"
 
     """종목 정보 조회"""
-    def get_stock_info(self, market="AMEX", code="MSTZ"):
+    def get_stock_info(self, market="NASD", code="AAPL"):
         PATH = "uapi/overseas-price/v1/quotations/search-info"
         URL = f"{self.URL_BASE}/{PATH}"
         market_code_map = {
