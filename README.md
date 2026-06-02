@@ -75,7 +75,7 @@ API 요청과 스케줄러 작업은 `state_manager.lock` (RLock)으로 상호 �
 
 | 시각 | 함수 | 역할 |
 |------|------|------|
-| 09:34 | `initiate_the_day` | 액세스 토큰 발급, 시가/평단가 조회, 상태 초기화 (`last_sold_price` 포함) |
+| 09:31 | `initiate_the_day` | 액세스 토큰 발급, 시가/평단가 조회, 상태 초기화 (`last_sold_price` 포함) |
 | 매분 :30초 | `check_the_market` | 체결 확인 → 주문 취소/재생성 |
 | 16:00 | `terminate_the_day` | 주문 정보 클리어, 장 종료 처리 |
 

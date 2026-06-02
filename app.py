@@ -19,7 +19,7 @@ scheduler = BlockingScheduler()
 
 ny_tz = timezone('America/New_York')
 
-scheduler.add_job(func=initiate_the_day, trigger=CronTrigger(day_of_week="mon-fri", hour=9, minute=34, timezone=ny_tz))
+scheduler.add_job(func=initiate_the_day, trigger=CronTrigger(day_of_week="mon-fri", hour=9, minute=31, timezone=ny_tz))
 scheduler.add_job(func=check_the_market, trigger=CronTrigger(day_of_week="mon-fri", minute="*/1", second="30", timezone=ny_tz))
 scheduler.add_job(func=terminate_the_day, trigger=CronTrigger(day_of_week="mon-fri", hour=16, minute=0, timezone=ny_tz))
 
